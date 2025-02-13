@@ -110,4 +110,8 @@ public class User {
         this.password = hashPass;
         this.salt = salt;
     }
+
+    public void deleteAcc() {
+        users.remove(this);
+    }
 }

@@ -105,6 +105,7 @@ public class Main {
             System.out.println(" 2) Change note.");
             System.out.println(" 3) Delete note.");
             System.out.println(" 4) Change password.");
+            System.out.println(" 5) Delete account.");
             System.out.println(" 0) quit.");
             System.out.println("|-------------|");
 
@@ -114,6 +115,10 @@ public class Main {
                 case 2 -> changeNote(user, correctPass);
                 case 3 -> deleteNote(user, correctPass);
                 case 4 -> changePass(user, correctPass);
+                case 5 -> {
+                    deleteAcc(user);
+                    is_running = false;
+                }
                 case 0 -> {
                     System.out.println();
                     is_running = false;
@@ -218,6 +223,32 @@ public class Main {
                 System.out.println("Password successfully changed.");
                 System.out.print("Press enter to continue..");
                 inputValidation.scanner.nextLine();
+                break;
+            }
+        }
+    }
+
+    private static void deleteAcc(User user)
+            throws InterruptedException, NoSuchAlgorithmException, InvalidKeySpecException {
+
+        while (true) {
+            boolean confirm = inputValidation.checkBool("Are you sure you want to delete your account? (y/n): ");
+            if (confirm) {
+
+                String checkPassword = inputValidation.checkString("Enter your password: ");
+                if (!Cryptography.toHashString(checkPassword, user.getSalt()).equals(user.getPassword())) {
+                    System.out.println("Wrong password.");
+                    Thread.sleep(sleepTime);
+                    continue;
+                } else {
+                    user.deleteAcc();
+                    System.out.println("Account has been deleted.");
+                    System.out.print("Press enter to continue..");
+                    inputValidation.scanner.nextLine();
+                    break;
+                }
+
+            } else {
                 break;
             }
         }

@@ -2,6 +2,7 @@ package com.joseph.Utils;
 
 import com.joseph.*;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -16,9 +17,18 @@ public abstract class DataHandler {
 
     private static Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
+    private static final String HOME_PATH = System.getProperty("user.home") + File.separator + "Documents"
+            + File.separator + "Secret Note";
+    private static final String FILE_LOCATION = HOME_PATH + File.separator + "users.json";
+
     public static void saveUsers() {
 
-        try (FileWriter writer = new FileWriter("users.json")) {
+        File directory = new File(HOME_PATH);
+        if (!directory.exists()) {
+            directory.mkdirs();
+        }
+
+        try (FileWriter writer = new FileWriter(FILE_LOCATION)) {
 
             ArrayList<User> users = User.getUsersList();
             gson.toJson(users, writer);
@@ -36,7 +46,7 @@ public abstract class DataHandler {
 
         } else {
 
-            try (FileReader reader = new FileReader("users.json")) {
+            try (FileReader reader = new FileReader(FILE_LOCATION)) {
                 Type type = new TypeToken<ArrayList<User>>() {
                 }.getType();
                 User.setUsers(gson.fromJson(reader, type));
