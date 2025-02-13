@@ -3,6 +3,8 @@
 .project
 gradle.properties
 app/bin/
+.settings
+app/.settings
 
 
 
